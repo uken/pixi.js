@@ -136,7 +136,7 @@ PIXI.BaseTexture.prototype.destroy = function()
         delete PIXI.BaseTextureCache[this.imageUrl];
         delete PIXI.TextureCache[this.imageUrl];
         this.imageUrl = null;
-        this.source.src = null;
+        this.source.src = undefined;
     }
     else if (this.source && this.source._pixiId)
     {
@@ -155,7 +155,7 @@ PIXI.BaseTexture.prototype.destroy = function()
 PIXI.BaseTexture.prototype.updateSourceImage = function(newSrc)
 {
     this.hasLoaded = false;
-    this.source.src = null;
+    this.source.src = undefined;
     this.source.src = newSrc;
 };
 
