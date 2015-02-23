@@ -13587,7 +13587,7 @@ PIXI.Texture = function(baseTexture, frame)
     else
     {
         var scope = this;
-        baseTexture.addEventListener('loaded', function(){ scope.onBaseTextureLoaded(); });
+        baseTexture.addEventListener('loaded', function eventListener(){ scope.onBaseTextureLoaded(eventListener); });
     }
 };
 
@@ -13600,10 +13600,13 @@ PIXI.Texture.prototype.constructor = PIXI.Texture;
  * @param event
  * @private
  */
-PIXI.Texture.prototype.onBaseTextureLoaded = function()
+PIXI.Texture.prototype.onBaseTextureLoaded = function(eventListener)
 {
     var baseTexture = this.baseTexture;
-    baseTexture.removeEventListener('loaded', this.onLoaded);
+
+    if (eventListener) {
+        baseTexture.removeEventListener('loaded', eventListener);
+    }
 
     if (this.noFrame) this.frame = new PIXI.Rectangle(0, 0, baseTexture.width, baseTexture.height);
 
@@ -14321,7 +14324,6 @@ PIXI.JsonLoader.prototype.load = function () {
 
 
     this.ajaxRequest.onload = function(){
-
         scope.onJSONLoaded();
     };
 
@@ -14345,6 +14347,8 @@ PIXI.JsonLoader.prototype.onJSONLoaded = function () {
     var actualSize;
     var realSize;
     var i;
+
+    this.ajaxRequest.onload = null;
 
     if(!this.ajaxRequest.responseText )
     {
@@ -14411,8 +14415,8 @@ PIXI.JsonLoader.prototype.onJSONLoaded = function () {
         frameData = this.json.frames;
 
         this.texture = image.texture.baseTexture;
-        image.addEventListener('loaded', function() {
-            scope.onLoaded();
+        image.addEventListener('loaded', function eventListener() {
+            scope.onLoaded(eventListener);
         });
 
         for (i in frameData)
@@ -14469,6 +14473,7 @@ PIXI.JsonLoader.prototype.onLoaded = function () {
         type: 'loaded',
         content: this
     });
+    this.removeAllEventListeners('loaded');
 };
 
 /**
@@ -14824,9 +14829,9 @@ PIXI.ImageLoader.prototype.load = function()
     if(!this.texture.baseTexture.hasLoaded)
     {
         var scope = this;
-        this.texture.baseTexture.addEventListener('loaded', function()
+        this.texture.baseTexture.addEventListener('loaded', function eventListener()
         {
-            scope.onLoaded();
+            scope.onLoaded(eventListener);
         });
     }
     else
@@ -14841,9 +14846,13 @@ PIXI.ImageLoader.prototype.load = function()
  * @method onLoaded
  * @private
  */
-PIXI.ImageLoader.prototype.onLoaded = function()
+PIXI.ImageLoader.prototype.onLoaded = function(eventListener)
 {
     this.dispatchEvent({type: 'loaded', content: this});
+
+    if (eventListener) {
+        this.texture.baseTexture.removeEventListener('loaded', eventListener);
+    }
 };
 
 /**
