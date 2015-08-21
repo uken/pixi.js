@@ -12,8 +12,8 @@ Gem::Specification.new do |spec|
   spec.description   = "Pixi.js"
   spec.license       = "MIT"
 
-  FileUtils.cp('bin/pixi.js', '../vendor/assets/javascripts/pixi.js')
-  FileUtils.cp('bin/pixi.js.map', '../vendor/assets/javascripts/pixi.js.map')
+  FileUtils.cp('bin/pixi.js', 'vendor/assets/javascripts/pixi.js')
+  FileUtils.cp('bin/pixi.js.map', 'vendor/assets/javascripts/pixi.js.map')
   spec.files         = ['vendor/assets/javascripts/pixi.js', 'vendor/assets/javascripts/pixi.js.map', 'lib/pixi.js.rb']
   spec.require_paths = ["lib"]
 end
