@@ -19,11 +19,11 @@ module.exports = function ()
 
         var resolution = core.utils.getResolutionOfUrl( resource.url );
         var absolute = Boolean(resource.data.meta.absolute);
-        var imagePath = resource.data.meta.image
+        var imagePath = resource.data.meta.image;
 
         if (!absolute) {
             var route = path.dirname(resource.url.replace(this.baseUrl, ''));
-            imagePath = route + '/' + resource.data.meta.image
+            imagePath = route + '/' + resource.data.meta.image;
         }
 
         // load the image for this sheet

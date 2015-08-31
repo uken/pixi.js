@@ -18415,6 +18415,7 @@ Texture.fromImage = function (imageUrl, crossorigin, scaleMode)
     if (!texture)
     {
         texture = new Texture(BaseTexture.fromImage(imageUrl, crossorigin, scaleMode));
+        console.log(imageUrl);
         utils.TextureCache[imageUrl] = texture;
     }
 
@@ -25273,17 +25274,12 @@ module.exports = function ()
             loadType: Resource.LOAD_TYPE.IMAGE
         };
 
-        var resolution = core.utils.getResolutionOfUrl( resource.url );
-        var absolute = Boolean(resource.data.meta.absolute);
-        var imagePath = resource.data.meta.image;
+        var route = path.dirname(resource.url.replace(this.baseUrl, ''));
 
-        if (!absolute) {
-            var route = path.dirname(resource.url.replace(this.baseUrl, ''));
-            imagePath = route + '/' + resource.data.meta.image;
-        }
+        var resolution = core.utils.getResolutionOfUrl( resource.url );
 
         // load the image for this sheet
-        this.add(resource.name + '_image', imagePath, loadOptions, function (res)
+        this.add(resource.name + '_image', route + '/' + resource.data.meta.image, loadOptions, function (res)
         {
             resource.textures = {};
 
