@@ -17,12 +17,17 @@ module.exports = function ()
             loadType: Resource.LOAD_TYPE.IMAGE
         };
 
-        var route = path.dirname(resource.url.replace(this.baseUrl, ''));
-
         var resolution = core.utils.getResolutionOfUrl( resource.url );
+        var absolute = Boolean(resource.data.meta.absolute);
+        var imagePath = resource.data.meta.image
+
+        if (!absolute) {
+            var route = path.dirname(resource.url.replace(this.baseUrl, ''));
+            imagePath = route + '/' + resource.data.meta.image
+        }
 
         // load the image for this sheet
-        this.add(resource.name + '_image', route + '/' + resource.data.meta.image, loadOptions, function (res)
+        this.add(resource.name + '_image', imagePath, loadOptions, function (res)
         {
             resource.textures = {};
 
